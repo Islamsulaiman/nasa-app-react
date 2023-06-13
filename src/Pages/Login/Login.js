@@ -1,9 +1,19 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useDispatch } from "react-redux";
+import { login } from '../../store/authSlice/login';
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 import * as Yup from 'yup';
 import "./Login.css";
 
 const LoginForm = () => {
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const initialValues = {
     userName: '',
     password: ''
@@ -21,6 +31,32 @@ const LoginForm = () => {
     // Reset the form
     resetForm();
   };
+
+  // const handleSubmit = async (values, { setSubmitting }) => {
+  //   try {
+  //     const response = await axios.post(
+  //       `${process.env.REACT_APP_BASE_API_URL}/login/`,
+  //       values
+  //     );
+
+  //     if (!response.data.tokens) {
+  //       toast.error("Invalid username or password", {
+  //         position: toast.POSITION.TOP_RIGHT,
+  //       });
+  //     }
+
+  //     localStorage.setItem("token", response.data.tokens.access);
+  //     toast.success("Login Successfully", {
+  //       position: toast.POSITION.TOP_RIGHT,
+  //     });
+  //     navigate("/");
+  //     dispatch(login());
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     setSubmitting(false);
+  //   }
+  // };
 
   return (
     <div className='login'>
