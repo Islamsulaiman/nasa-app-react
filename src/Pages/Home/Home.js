@@ -1,6 +1,7 @@
 import SearchBar from "../../Components/Search-Bar/Search";
 import Typewriter from "typewriter-effect";
 import "./Home.css"
+import Data from "../../Components/Data/Data";
 
 const Home = () => {
     return ( 
@@ -19,7 +20,7 @@ const Home = () => {
                     }}
                 />
             </div>
-            <SearchBar/>
+            <Data/>
         </div>
         
         </>
