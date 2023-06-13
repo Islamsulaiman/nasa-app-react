@@ -18,7 +18,7 @@ const Data = (props) => {
     const fetchData = async (searchTerm) => { 
             try {
                 if(searchTerm){
-                    const response = await fetch(`${process.env.REACT_APP_BASE_API_URL}search?q=${searchTerm}&pageNumber=7&limit=2`);
+                    const response = await fetch(`${process.env.REACT_APP_BASE_API_URL}/search?q=${searchTerm}&pageNumber=7&limit=2`);
                     const data = await response.json();
                     setSearchResults(data);
                 }
