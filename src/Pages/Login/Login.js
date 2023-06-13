@@ -11,52 +11,61 @@ import "./Login.css";
 
 const LoginForm = () => {
 
+  console.log("ligin comp")
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const initialValues = {
-    userName: '',
+    email: '',
     password: ''
   };
 
   const validationSchema = Yup.object({
-    userName: Yup.string().required('Username is required').min(3, 'Username must be at least 3 characters'),
+    email: Yup.string().required('email is required').min(3, 'email must be at least 3 characters').email(),
     password: Yup.string().required('Password is required')
   });
 
-  const handleSubmit = (values, { resetForm }) => {
-    // Handle form submission
-    console.log(values);
+  // const handleSubmit = (values, { resetForm }) => {
+  //   // Handle form submission
+  //   console.log(values);
 
-    // Reset the form
-    resetForm();
-  };
-
-  // const handleSubmit = async (values, { setSubmitting }) => {
-  //   try {
-  //     const response = await axios.post(
-  //       `${process.env.REACT_APP_BASE_API_URL}/login/`,
-  //       values
-  //     );
-
-  //     if (!response.data.tokens) {
-  //       toast.error("Invalid username or password", {
-  //         position: toast.POSITION.TOP_RIGHT,
-  //       });
-  //     }
-
-  //     localStorage.setItem("token", response.data.tokens.access);
-  //     toast.success("Login Successfully", {
-  //       position: toast.POSITION.TOP_RIGHT,
-  //     });
-  //     navigate("/");
-  //     dispatch(login());
-  //   } catch (error) {
-  //     console.error(error);
-  //   } finally {
-  //     setSubmitting(false);
-  //   }
+  //   // Reset the form
+  //   resetForm();
   // };
+
+  const handleSubmit = async (values, { setSubmitting }) => {
+    console.log(values)
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_API_URL}/login/`,
+        values
+      );
+
+      console.log(response)
+      
+
+
+      if (!response.data.token) {
+        toast.error("Invalid email or password", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+
+      console.log("one")
+      console.log(values)
+
+      localStorage.setItem("token", response.data.token);
+      toast.success("Login Successfully", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      navigate("/");
+      dispatch(login());
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className='login'>
@@ -66,9 +75,9 @@ const LoginForm = () => {
         <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
             <Form>
             <div>
-                <label htmlFor="userName"><b>Username:</b></label>
-                <Field type="text" id="userName" name="userName" placeholder="Enter Username" />
-                <ErrorMessage name="userName" component="div" className="error" />
+                <label htmlFor="email"><b>Email:</b></label>
+                <Field type="text" id="email" name="email" placeholder="Enter email" />
+                <ErrorMessage name="email" component="div" className="error" />
             </div>
             <div>
                 <label htmlFor="password"><b>Password:</b></label>
