@@ -2,19 +2,27 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import "./Registration.css"
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+
 const RegistrationForm = () => {
+
+  const navigate = useNavigate();
+
   const initialValues = {
-    firstName: '',
-    lastName: '',
+    fullName: '',
     userName: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    image: "placeholder",
   };
 
   const validationSchema = Yup.object({
-    firstName: Yup.string().required('First Name is required').min(3, 'First name must be at least 3 characters'),
-    lastName: Yup.string().required('Last Name is required').min(3, 'Last name must be at least 3 characters'),
+    fullName: Yup.string().required('Name is required').min(3, 'First name must be at least 3 characters'),
     userName: Yup.string().required('Username is required').min(3, 'Username must be at least 3 characters'),
     email: Yup.string().email('Invalid email address').required('Email is required'),
     password: Yup.string()
@@ -28,12 +36,61 @@ const RegistrationForm = () => {
       .oneOf([Yup.ref('password')], 'Passwords must match')
   });
 
-  const handleSubmit = (values, { resetForm }) => {
-    // Handle form submission
-    console.log(values);
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    console.log("hello")
+    try {
+      let formData = new FormData();
 
-    // Reset the form
-    resetForm();
+      formData.append("username", values.username);
+      formData.append("password", values.password);
+      formData.append("confirm_password", values.confirm_password);
+      formData.append("email", values.email);
+
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_API_URL}/register/`,
+        formData
+      );
+
+      if (response.status === 200) {
+        resetForm();
+        toast.success("Form submitted successfully!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        navigate("/login");
+      } else {
+        toast.error("Failed to submit the form, please try again later.", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    } catch (error) {
+      if (error.response && error.response.data) {
+        const { data } = error.response;
+
+        if (typeof data === "string") {
+          toast.error(data, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        } else if (typeof data === "object") {
+          const errorMessages = Object.values(data).flat();
+
+          errorMessages.forEach((errorMessage) => {
+            toast.error(errorMessage, {
+              position: toast.POSITION.TOP_RIGHT,
+            });
+          });
+        } else {
+          toast.error("An error occurred while submitting the form.", {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        }
+      } else {
+        toast.error("An error occurred while submitting the form.", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -43,14 +100,9 @@ const RegistrationForm = () => {
       <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
         <Form>
           <div>
-            <label htmlFor="firstName"><b>First Name:</b></label>
+            <label htmlFor="firstName"><b>Full Name:</b></label>
             <Field type="text" id="firstName" name="firstName" placeholder="Enter First Name" />
             <ErrorMessage name="firstName" component="div" className="error" />
-          </div>
-          <div>
-            <label htmlFor="lastName"><b>Last Name:</b></label>
-            <Field type="text" id="lastName" name="lastName" placeholder="Enter Last Name" />
-            <ErrorMessage name="lastName" component="div" className="error" />
           </div>
           <div>
             <label htmlFor="email"><b>Email:</b></label>

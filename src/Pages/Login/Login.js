@@ -25,34 +25,19 @@ const LoginForm = () => {
     password: Yup.string().required('Password is required')
   });
 
-  // const handleSubmit = (values, { resetForm }) => {
-  //   // Handle form submission
-  //   console.log(values);
-
-  //   // Reset the form
-  //   resetForm();
-  // };
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    console.log(values)
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_API_URL}/login/`,
         values
       );
 
-      console.log(response)
-      
-
-
       if (!response.data.token) {
         toast.error("Invalid email or password", {
           position: toast.POSITION.TOP_RIGHT,
         });
       }
-
-      console.log("one")
-      console.log(values)
 
       localStorage.setItem("token", response.data.token);
       toast.success("Login Successfully", {
