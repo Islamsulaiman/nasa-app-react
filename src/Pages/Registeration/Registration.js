@@ -7,20 +7,18 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+const initialValues = {
+  fullName: '',
+  userName: '',
+  email: '',
+  password: '',
+  confirm_password: '',
+  // image: "placeholder",
+};
 
 const RegistrationForm = () => {
 
   const navigate = useNavigate();
-
-  const initialValues = {
-    fullName: '',
-    userName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    image: "placeholder",
-  };
-
   const validationSchema = Yup.object({
     fullName: Yup.string().required('Name is required').min(3, 'First name must be at least 3 characters'),
     userName: Yup.string().required('Username is required').min(3, 'Username must be at least 3 characters'),
@@ -41,6 +39,7 @@ const RegistrationForm = () => {
     try {
       let formData = new FormData();
 
+      formData.append("fullname", values.fullname);
       formData.append("username", values.username);
       formData.append("password", values.password);
       formData.append("confirm_password", values.confirm_password);
@@ -51,7 +50,7 @@ const RegistrationForm = () => {
         formData
       );
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         resetForm();
         toast.success("Form submitted successfully!", {
           position: toast.POSITION.TOP_RIGHT,
@@ -97,12 +96,17 @@ const RegistrationForm = () => {
     <div className="register-container">
       <h1>Sign Up</h1>
       <p>Please fill in this form to create an account.</p>
-      <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
+      <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit} validateOnChange={true}>
         <Form>
+        <div>
+            <label htmlFor="fullname"><b>Full Name:</b></label>
+            <Field type="text" id="fullname" name="fullname" placeholder="Enter First Name" />
+            <ErrorMessage name="fullname" component="div" className="error" />
+          </div>
           <div>
-            <label htmlFor="firstName"><b>Full Name:</b></label>
-            <Field type="text" id="firstName" name="firstName" placeholder="Enter First Name" />
-            <ErrorMessage name="firstName" component="div" className="error" />
+            <label htmlFor="username"><b>User Name:</b></label>
+            <Field type="text" id="username" name="username" placeholder="Enter First Name" />
+            <ErrorMessage name="username" component="div" className="error" />
           </div>
           <div>
             <label htmlFor="email"><b>Email:</b></label>
