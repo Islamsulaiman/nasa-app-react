@@ -2,7 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import "./Navbar.css"
-import { Link } from 'react-router-dom';
+import { Link , Route} from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import { logout, login } from '../../store/authSlice/login';
 import { useEffect } from 'react';
@@ -44,18 +44,20 @@ function NavCom() {
       
           </Nav>
           <Nav>
-                <Nav.Link as={Link} to="/registration" className="d-flex">
-                    Register
-                </Nav.Link>
+
                 { isLoggedIn ? (
                     <button onClick={handleLogout}> Log Out</button>
                   ):(
-                    
-
+                    <>
+                      <Nav.Link as={Link} to="/registration" className="d-flex">
+                      Register
+                      </Nav.Link>
                     
                       <Nav.Link as={Link} to="/login" className="d-flex">
                       Login
                       </Nav.Link>
+                    </>
+
                   )
                 }
 
