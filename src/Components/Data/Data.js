@@ -1,6 +1,6 @@
 import { debounce } from 'lodash';
 import { useState } from 'react';
-
+import './Data.css'
 const Data = (props) => {
      // Search Logic //
     // Open
@@ -18,9 +18,10 @@ const Data = (props) => {
     const fetchData = async (searchTerm) => { 
             try {
                 if(searchTerm){
-                    const response = await fetch(`${process.env.REACT_APP_BASE_API_URL}/search?q=${searchTerm}&pageNumber=7&limit=2`);
+                    const response = await fetch(`${process.env.REACT_APP_BASE_API_URL}/search?q=${searchTerm}&pageNumber=1&limit=8`);
                     const data = await response.json();
-                    setSearchResults(data);
+                    if(data.length >= 1)
+                        setSearchResults(data);
                 }
                 else if (searchTerm === ''){
                     setSearchResults('');
@@ -30,25 +31,30 @@ const Data = (props) => {
                 console.error('Error fetching data:', error);
             }
     };
+    console.log(searchResults);
     return ( 
         <>
             <div class="search-box">
             <input class="search-input" onChange={handleInputChange} type="text" placeholder="Search something.."/>
             <button class="search-btn"><i class="fas fa-search"></i></button>
         </div>
-        
-        <ul className="search_res">
+        <div id='Data'>
+        <div class="container mt-2">
+                 <div class="row">
                     {searchResults && searchResults.map((result) => (
-                        <li className="row" key={result.id}>
-                            <div style={{marginRight: '10px'}} className="col-md-4">
-                                <img  height={50} width={60} src={`${result.href}`} alt="result.name" />
-                                
-                            </div>
-                            <p className="col-md-5">{result.name}</p>
 
-                        </li>
+                   <div class="col-md-3 col-sm-6 item" key={result.data[0].nasa_id}>
+                     <div class="card item-card card-block">
+                     <h4 class="card-title text-right"><i class="material-icons">{result.data[0].title}</i></h4>
+                   <img src={`${result.links[0].href}`} alt="Photo of sunset"/>
+                       <h5 class="item-card-title mt-3 mb-3">{result.data[0].description}</h5>
+                 </div>
+                   </div>    
                     ))}
-        </ul>
+                    </div>
+                 
+                 </div>
+            </div>
         </>
 
      );

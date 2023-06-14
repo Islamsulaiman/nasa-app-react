@@ -17,4 +17,4 @@ REACT_APP_BASE_API_URL=http://localhost:4000
 
 ```
 
-Thank you, and I will continue working on the project locally
+Thank you, and I will continue working on the project locally.
