@@ -13,7 +13,7 @@ const initialValues = {
   email: '',
   password: '',
   confirm_password: '',
-  // image: "placeholder",
+  image: "placeholder",
 };
 
 const RegistrationForm = () => {
@@ -39,18 +39,20 @@ const RegistrationForm = () => {
     try {
       let formData = new FormData();
 
-      formData.append("fullname", values.fullname);
-      formData.append("username", values.username);
+      formData.append("fullName", values.fullName);
+      formData.append("userName", values.userName);
       formData.append("password", values.password);
-      formData.append("confirm_password", values.confirm_password);
+      // formData.append("confirm_password", values.confirm_password);
       formData.append("email", values.email);
+      formData.append("image", "placeholder");
+
 
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_API_URL}/register/`,
-        formData
+        `${process.env.REACT_APP_BASE_API_URL}/register`,
+        values
       );
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         resetForm();
         toast.success("Form submitted successfully!", {
           position: toast.POSITION.TOP_RIGHT,
@@ -96,17 +98,17 @@ const RegistrationForm = () => {
     <div className="register-container">
       <h1>Sign Up</h1>
       <p>Please fill in this form to create an account.</p>
-      <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit} validateOnChange={true}>
+      <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit} >
         <Form>
         <div>
-            <label htmlFor="fullname"><b>Full Name:</b></label>
-            <Field type="text" id="fullname" name="fullname" placeholder="Enter First Name" />
-            <ErrorMessage name="fullname" component="div" className="error" />
+            <label htmlFor="fullName"><b>Full Name:</b></label>
+            <Field type="text" id="fullName" name="fullName" placeholder="Enter First Name" />
+            <ErrorMessage name="fullName" component="div" className="error" />
           </div>
           <div>
-            <label htmlFor="username"><b>User Name:</b></label>
-            <Field type="text" id="username" name="username" placeholder="Enter First Name" />
-            <ErrorMessage name="username" component="div" className="error" />
+            <label htmlFor="userName"><b>User Name:</b></label>
+            <Field type="text" id="userName" name="userName" placeholder="Enter First Name" />
+            <ErrorMessage name="userName" component="div" className="error" />
           </div>
           <div>
             <label htmlFor="email"><b>Email:</b></label>

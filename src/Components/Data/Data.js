@@ -9,8 +9,12 @@ import ClipLoader from "react-spinners/ClipLoader";
 const Data = (props) => {
      // Search Logic //
     // Open
-    const [searchResults, setSearchResults] = useState([]);
+    const [searchResults, setSearchResults] = useState({collection:{items:[], links:[]}});
     let [isLoading, setIsloading] = useState(false)
+    let [pageNumber, setPageNumber] = useState(1)
+
+    let myData;
+
 
     console.log(`islading: ${isLoading}`)
     
@@ -30,23 +34,42 @@ const Data = (props) => {
                     setIsloading(true)
                     console.log(`islading: ${isLoading}`)
                     const response = await fetch(`${process.env.REACT_APP_BASE_API_URL}/search?q=${searchTerm}&pageNumber=1&limit=8`);
+
+                    console.log("response")
+                    console.log(response)
+
                     const data = await response.json();
+
+
                     setIsloading(false)
                         console.log(`islading: ${isLoading}`)
 
-                    if(data.length >= 1){
+                    if(data.collection.items.length >= 1){
                         setSearchResults(data);
+
                     }else{
                         toast.error("Nothing found", {
                             position: toast.POSITION.TOP_RIGHT,
                             autoClose: 1000
                           });
                     }
+
+                    console.log("data")
+                    console.log(data)
+                
+                    if(response.status !== 400){
+                        myData=data.collection.items
+                        console.log("myData")
+                        console.log(myData)
+                    } 
+
+
                 }
                 else if (searchTerm === ''){
                     setSearchResults('');
 
                 }
+
             } catch (error) {
                 console.error('Error fetching data:', error);
                 toast.error("Network Error", {
@@ -55,6 +78,12 @@ const Data = (props) => {
                   });
             }
     };
+
+
+    console.log("myData at the end")
+    console.log(myData)
+
+    console.log("searchResults");
     console.log(searchResults);
     return ( 
         <>
@@ -74,9 +103,13 @@ const Data = (props) => {
                                 </div>
                             
                             ) : (
-                            searchResults ? (
-                                searchResults.map((result) => (
-                                <div class="col-md-3 col-sm-6 item" key={result.data[0].nasa_id}>
+
+
+
+                                searchResults ? (
+                                    searchResults.collection.items.map((result) => (
+                                    
+                                    <div class="col-md-3 col-sm-6 item" key={result.data[0].nasa_id}>
                                     <div class="card item-card card-block">
                                     <h4 class="card-title text-right"><i class="material-icons">{result.data[0].title}</i></h4>
                                     <img src={`${result.links[0].href}`} alt="Photo of sunset"/>
@@ -92,18 +125,16 @@ const Data = (props) => {
                      
                 </div>
 
-                <div class="flex flex-col items-center">
-                <div class="inline-flex mt-2 xs:mt-0">
-                    <button  class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-800 rounded-l hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                        <svg aria-hidden="true" class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg>
-                        Prev
-                    </button>
-                    <button  class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-800 border-0 border-l border-gray-700 rounded-r hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                        Next
-                        <svg aria-hidden="true" class="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                    </button>
-                </div>
-            </div>
+                {/* <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+                </nav> */}
+
+                <button >Next</button>
+                <button disabled={searchResults.collection.links.length <= 1}>Prev</button>
+
 
             </div>
         </>

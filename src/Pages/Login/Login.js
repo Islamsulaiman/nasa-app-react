@@ -8,6 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import * as Yup from 'yup';
 import "./Login.css";
+import { useSelector } from 'react-redux';
+
 
 const LoginForm = () => {
 
@@ -28,10 +30,14 @@ const LoginForm = () => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
+      console.log("response")
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_API_URL}/login/`,
         values
       );
+
+      console.log("response")
+      console.log(response)
 
       if (!response.data.token) {
         toast.error("Invalid email or password", {
@@ -45,12 +51,21 @@ const LoginForm = () => {
       });
       navigate("/");
       dispatch(login());
+
     } catch (error) {
-      console.error(error);
+      console.error(error.response.data["Error massage"]);
+      toast.error(error.response.data["Error massage"], {
+        position: toast.POSITION.TOP_RIGHT,
+      });
     } finally {
       setSubmitting(false);
     }
+
   };
+
+  const isLoginVar = useSelector((state) => state.auth.isLoggedIn)
+  console.log("isLoginVar")
+  console.log(isLoginVar)
 
   return (
     <div className='login'>
