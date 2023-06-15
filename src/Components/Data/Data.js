@@ -1,9 +1,16 @@
 import { debounce } from 'lodash';
-import { useState } from 'react';
+import { useState, Fragment } from 'react';
 import './Data.css'
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
+import Card from "../UI/card/Card"
+import { useDispatch, useSelector } from "react-redux";
+import { faHeart, faLock } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import SingleCard from '../singleCard/SingleCard';
+
+
 
 
 const Data = (props) => {
@@ -12,6 +19,7 @@ const Data = (props) => {
     const [searchResults, setSearchResults] = useState({collection:{items:[], links:[]}});
     let [isLoading, setIsloading] = useState(false)
     let [pageNumber, setPageNumber] = useState(1)
+
 
     let myData;
 
@@ -94,43 +102,27 @@ const Data = (props) => {
             <div id='Data'>
                 <div class="container mt-2">
 
-
-                        <div class="row">
-
-                            {isLoading ? (
-                                <div>
+                        <div class="row mb-3">
+                                {isLoading ? (
+                                    <div>
                                     <ClipLoader color={"#ffffff"} loading={isLoading} size={75} aria-label="Loading Spinner" data-testid="loader" />
-                                </div>
-                            
-                            ) : (
-
-
-
-                                searchResults ? (
-                                    searchResults.collection.items.map((result) => (
-                                    
-                                    <div class="col-md-3 col-sm-6 item" key={result.data[0].nasa_id}>
-                                    <div class="card item-card card-block">
-                                    <h4 class="card-title text-right"><i class="material-icons">{result.data[0].title}</i></h4>
-                                    <img src={`${result.links[0].href}`} alt="Photo of sunset"/>
-                                    <h5 class="item-card-title mt-3 mb-3">{result.data[0].description}</h5>
                                     </div>
-                                </div>  
-                                ))
-                            ) : null
-                            )}
-
-                                    
+                                ) : (
+                                    searchResults ? (
+                                    searchResults.collection.items.map((result) => {
+                                        <div >
+                                        </div>
+                                        return (
+                                        <div class="col-md-3 col-sm-6" key={result.data[0].nasa_id}>
+                                            <SingleCard result={result} />
+                                        </div>
+                                        );
+                                    })
+                                    ) : null
+                                )}
                         </div>
                      
                 </div>
-
-                {/* <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
-                </nav> */}
 
                 <button >Next</button>
                 <button disabled={searchResults.collection.links.length <= 1}>Prev</button>

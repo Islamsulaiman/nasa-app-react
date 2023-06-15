@@ -22,6 +22,7 @@ function NavCom() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     dispatch(logout())
     window.location.reload()
 
