@@ -9,7 +9,7 @@ import RegistrationForm from "./Pages/Registeration/Registration";
 import LoginForm from "./Pages/Login/Login";
 import Footer from "./Components/Footer/Footer";
 import { useSelector, useDispatch } from "react-redux";
-
+import NotFound from "./Pages/notFound/notFound";
 
 // import Login from "./pages/Login/Login";
 // import UserProfile from "./pages/UserProfile/UserProfile";
@@ -35,6 +35,8 @@ function App() {
                 <Route path="/registration" element={<RegistrationForm />} />
                 {/* <Route path="/user/profile" element={<UserProfile />} /> */}
                 <Route path="/login" element={<LoginForm />} />
+
+                <Route path='*' element={<NotFound />} />
               </>
             ):(
               <>
