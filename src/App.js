@@ -10,6 +10,7 @@ import LoginForm from "./Pages/Login/Login";
 import Footer from "./Components/Footer/Footer";
 import { useSelector, useDispatch } from "react-redux";
 import NotFound from "./Pages/notFound/notFound";
+import User from "./Pages/User/User";
 
 // import Login from "./pages/Login/Login";
 // import UserProfile from "./pages/UserProfile/UserProfile";
@@ -32,6 +33,7 @@ function App() {
             isLoggedIn ? (
               <>
                 <Route path="/" element={<Home />} />
+                <Route path="/user" element={<User />} />
                 <Route path="/registration" element={<RegistrationForm />} />
                 {/* <Route path="/user/profile" element={<UserProfile />} /> */}
                 <Route path="/login" element={<LoginForm />} />

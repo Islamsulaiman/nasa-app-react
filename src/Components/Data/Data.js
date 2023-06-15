@@ -4,10 +4,6 @@ import './Data.css'
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ClipLoader from "react-spinners/ClipLoader";
-import Card from "../UI/card/Card"
-import { useDispatch, useSelector } from "react-redux";
-import { faHeart, faLock } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import SingleCard from '../singleCard/SingleCard';
 
 
@@ -114,7 +110,7 @@ const Data = (props) => {
                                         </div>
                                         return (
                                         <div class="col-md-3 col-sm-6" key={result.data[0].nasa_id}>
-                                            <SingleCard result={result} />
+                                            <SingleCard result={result} type={"add"}/>
                                         </div>
                                         );
                                     })

@@ -39,7 +39,7 @@ function NavCom() {
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-            <Nav.Link as={Link} to="/">Home</Nav.Link>
+            <Nav.Link as={Link} to="/user">User</Nav.Link>
             <Nav.Link href="#action1">About</Nav.Link>
 
       
