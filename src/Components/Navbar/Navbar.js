@@ -47,14 +47,14 @@ function NavCom() {
           <Nav>
 
                 { isLoggedIn ? (
-                    <button onClick={handleLogout}> Log Out</button>
+                    <button type="button" class="btn btn-danger" onClick={handleLogout}> Log Out</button>
                   ):(
                     <>
                       <Nav.Link as={Link} to="/registration" className="d-flex">
                       Register
                       </Nav.Link>
                     
-                      <Nav.Link as={Link} to="/login" className="d-flex">
+                      <Nav.Link  as={Link} to="/login" className="d-flex">
                       Login
                       </Nav.Link>
                     </>
