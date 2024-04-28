@@ -225,14 +225,6 @@ const Data = (props) => {
     }
   };
 
-//   const handleNext = () => {
-//     const nextLink = searchResults.collection.links.find((link) => link.rel === "next");
-//     if (nextLink) {
-//       const nextPageNumber = nextLink.href.split("=")[1];
-//       fetchData(searchTermRef.current, nextPageNumber);
-//     }
-//   };
-
 const handleNext = () => {
     const nextLink = searchResults.collection.links.find((link) => link.rel === "next");
     if (nextLink) {
@@ -240,15 +232,6 @@ const handleNext = () => {
       fetchData(searchTermRef.current, nextPageNumber);
     }
   };
-
-
-//   const handlePrev = () => {
-//     const prevLink = searchResults.collection.links.find((link) => link.rel === "prev");
-//     if (prevLink) {
-//       const prevPageNumber = prevLink.href.split("=")[1];
-//       fetchData(searchTermRef.current, prevPageNumber);
-//     }
-//   };
 
 const handlePrev = () => {
     const prevLink = searchResults.collection.links.find((link) => link.rel === "prev");
@@ -273,19 +256,36 @@ const handlePrev = () => {
               </div>
             ) : (
               searchResults.collection.items.map((result) => (
-                <div className="col-md-3 col-sm-6" key={result.data[0].nasa_id}>
+                <div className="col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-5" key={result.data[0].nasa_id}>
                   <SingleCard result={result} type={"add"}/>
                 </div>
               ))
             )}
           </div>
         </div>
-        {/* <button type="button" className="btn btn-primary" onClick={handlePrev} disabled={!searchResults.collection.links.find((link) => link.rel === "prev")}>Prev</button> */}
-        <button type="button" className="btn btn-primary" onClick={handlePrev} disabled={!searchResults.collection.links.find((link) => link.rel === "prev")}>Prev</button>
-        {/* <button type="button" className="btn btn-primary" onClick={handleNext} disabled={!searchResults.collection.links.find((link) => link.rel === "next")}>Next</button> */}
-        <button type="button" className="btn btn-primary" onClick={handleNext} disabled={!searchResults.collection.links.find((link) => link.rel === "next")}>Next</button>
+        {searchResults.collection.items.length >= 8 && !isLoading && (
+          <div className="text-center mb-5">
+            <button type="button" className="btn btn-primary mx-2" onClick={handlePrev} disabled={!searchResults.collection.links.find((link) => link.rel === "prev")}>Prev</button>
+            <button type="button" className="btn btn-primary mx-2" onClick={handleNext} disabled={!searchResults.collection.links.find((link) => link.rel === "next")}>Next</button>
+          </div>
+        )}
       </div>
     </>
+    //   const handleNext = () => {
+//     const nextLink = searchResults.collection.links.find((link) => link.rel === "next");
+//     if (nextLink) {
+//       const nextPageNumber = nextLink.href.split("=")[1];
+//       fetchData(searchTermRef.current, nextPageNumber);
+//     }
+//   };
+
+// const handlePrev = () => {
+//     const prevLink = searchResults.collection.links.find((link) => link.rel === "prev");
+//     if (prevLink) {
+//       const prevPageNumber = prevLink.href.split("=")[1];
+//       fetchData(searchTermRef.current, prevPageNumber);
+//     }
+//   };
   );
 }
  
